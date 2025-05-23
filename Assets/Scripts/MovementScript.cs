@@ -170,8 +170,12 @@ public class MovementScript : MonoBehaviour
 
     private bool IsGrounded()
     {
-        // Ground Check
-        return Physics2D.OverlapCircle(groundCheck.position, 0.2f, groundLayer);
+        if (groundCheck != null)
+        {
+            // Ground Check
+            return Physics2D.OverlapCircle(groundCheck.position, 0.2f, groundLayer);
+        }
+        return false;
     }
 
     private IEnumerator Dash()
