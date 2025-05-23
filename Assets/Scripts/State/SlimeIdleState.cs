@@ -21,7 +21,7 @@ public class SlimeIdleState : SlimBaseState
         // Randomly go into patrol
         int seed = (int)DateTime.Now.Ticks;
         UnityEngine.Random.InitState(seed);
-        if (UnityEngine.Random.value < 0.0001f)
+        if (UnityEngine.Random.value * 100 % 10 < 5)
         {
             slimeState.ChangeState(slimeState.patrolState);
             return;
@@ -32,16 +32,18 @@ public class SlimeIdleState : SlimBaseState
     {
         // When range is triggered, randomize between jump state and chase state
         int seed = (int)DateTime.Now.Ticks;
-        UnityEngine.Random.InitState(seed);
-        if (UnityEngine.Random.value < 0.5f)
-        {
-            slimeState.ChangeState(slimeState.patrolState);
-            return;
-        } 
-        else
-        {
-            slimeState.ChangeState(slimeState.jumpState);
-            return;
-        }
+        UnityEngine.Random.InitState(seed); 
+        slimeState.ChangeState(slimeState.chaseState);
+        return;
+        //if (UnityEngine.Random.value * 100 % 10 < 5)
+        //{
+        //    slimeState.ChangeState(slimeState.chaseState);
+        //    return;
+        //} 
+        //else
+        //{
+        //    slimeState.ChangeState(slimeState.jumpState);
+        //    return;
+        //}
     }
 }

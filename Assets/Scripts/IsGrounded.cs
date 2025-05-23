@@ -7,6 +7,10 @@ public class IsGrounded : MonoBehaviour
 
     public bool IsGroundeds()
     {
+        if (groundCheck != null)
+        {
+            return false;
+        }
         // Ground Check
         return Physics2D.OverlapCircle(groundCheck.position, 0.2f, groundLayer);
     }
