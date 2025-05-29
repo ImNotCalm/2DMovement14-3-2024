@@ -3,11 +3,11 @@ using UnityEngine;
 
 public class Fireball : MonoBehaviour
 {
-    private Vector3 scalePlayer;
-
     public float fireballSpeed;
     public float damage;
     public float graceDuration;
+
+    private bool direction;
 
     private Rigidbody2D rb;
 
@@ -17,7 +17,14 @@ public class Fireball : MonoBehaviour
 
         GameObject player = GameObject.FindWithTag("Player");
 
-        scalePlayer = player.transform.localScale;
+        direction = GameObject.FindWithTag("Player").GetComponent<Player>().facingRight; 
+
+        if (!direction)
+        {
+            transform.localScale = new Vector3(transform.localScale.x, -transform.localScale.y, transform.localScale.z);
+        }
+
+        transform.Rotate(0, 0, 90);
     }
 
     void Update()
@@ -31,13 +38,13 @@ public class Fireball : MonoBehaviour
 
     void FixedUpdate()
     {
-        if (scalePlayer.x == -1)
-        {
-            rb.linearVelocity = Vector2.left * fireballSpeed;
-        }
-        else if (scalePlayer.x == 1)
+        if (direction)
         {
             rb.linearVelocity = Vector2.right * fireballSpeed;
+        }
+        else
+        {
+            rb.linearVelocity = Vector2.left * fireballSpeed;
         }
     }
 
@@ -50,4 +57,14 @@ public class Fireball : MonoBehaviour
             Destroy(gameObject);
         }
     }
+
+    //void OnCollisionEnter2D(Collision2D other)
+    //{
+    //    var enemy = other.gameObject.GetComponent<Enemy>();
+    //    if (enemy != null)
+    //    {
+    //        enemy.TakeDamage(damage);
+    //        Destroy(gameObject);
+    //    }
+    //}
 }

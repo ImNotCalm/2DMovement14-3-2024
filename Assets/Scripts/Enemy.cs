@@ -31,7 +31,7 @@ public class Enemy : MonoBehaviour, IDamageable
     {
         // Changes color
         sprite.color = Color.red;
-        isHit = 100;
+        isHit = 20;
 
         health -= damage;
     }

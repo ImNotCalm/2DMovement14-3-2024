@@ -12,7 +12,7 @@ public class SlimeJumpState : SlimBaseState
 
     public override void EnterState(SlimeStateManager slimeState)
     {
-        IsGrounded = slimeState.GetComponent<IsGrounded>().IsGroundeds();
+        //IsGrounded = slimeState.GetComponent<IsGrounded>().IsGroundeds();
         Debug.Log("Jumping");
     }
 
@@ -24,7 +24,7 @@ public class SlimeJumpState : SlimBaseState
             return;
         }
 
-        IsGrounded = slimeState.GetComponent<IsGrounded>().IsGroundeds();
+        //IsGrounded = slimeState.GetComponent<IsGrounded>().IsGroundeds();
 
         if (GameObject.FindWithTag("Player").GetComponent<Transform>().position.x - slimeState.transform.position.x < 0 && !IsGrounded) // To the left
         {

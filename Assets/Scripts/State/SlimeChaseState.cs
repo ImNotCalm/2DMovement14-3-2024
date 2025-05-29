@@ -6,6 +6,7 @@ public class SlimeChaseState : SlimBaseState
     public override void ChangeCondition(SlimeStateManager slimeState, Collider2D other)
     {
         // Using collision
+        Debug.Log("Hit " + GameObject.FindWithTag("Player").GetComponent<Player>().health);
         GameObject.FindWithTag("Player").GetComponent<Player>().TakeDamage(slimeState.gameObject.GetComponent<Enemy>().damage);
     }
 

@@ -1,67 +1,62 @@
+using System;
 using UnityEngine;
 using static UnityEngine.RuleTile.TilingRuleOutput;
 
 public class Player : MonoBehaviour, IDamageable
 {
-    public GameObject deathAnim;
+    private Rigidbody2D rb;
     public float health { get; set; }
     public float damage { get; set; }
     public float speed { get; set; }
 
     public float maxHealth;
-    private SpriteRenderer sprite;
 
-    //private int isHit;
+    private Animator animator;
+
+    public bool facingRight = true;
 
     private void Start()
     {
+        rb = gameObject.GetComponent<Rigidbody2D>();
+
         health = maxHealth;
-        sprite = GetComponent<SpriteRenderer>();
-        //isHit = 0;
+
+        animator = GetComponent<Animator>();
     }
 
-    public void TakeDamage(float damage)
-    {
-        //// Changes color
-        //sprite.color = Color.red;
-        //isHit = 100;
-
-        health -= damage;
-
-        // Change sprite
-        //gameObject.GetComponent<MovementScript>().srFall.color = gameObject.GetComponent<MovementScript>().hide;
-        //gameObject.GetComponent<MovementScript>().srJump.color = gameObject.GetComponent<MovementScript>().hide;
-        //gameObject.GetComponent<MovementScript>().srIdle.color = gameObject.GetComponent<MovementScript>().hide;
-        //gameObject.GetComponent<MovementScript>().srRun.color = gameObject.GetComponent<MovementScript>().hide;
-        //gameObject.GetComponent<MovementScript>().srHurt.color = gameObject.GetComponent<MovementScript>().show;
-
-        // Jump abit
-        //if (gameObject.transform.position.x - GameObject.FindWithTag("Enemy").transform.position.x > 0) // To the right
-        //{
-        //    gameObject.GetComponent<Rigidbody2D>().linearVelocity = new Vector2(1f, 1f);
-        //}
-        //else if (gameObject.transform.position.x - GameObject.FindWithTag("Enemy").transform.position.x < 0) // To the left
-        //{
-        //    gameObject.GetComponent<Rigidbody2D>().linearVelocity = new Vector2(-1f, 1f);
-        //}
-    }
-
-    void Update()
+    void FixedUpdate()
     {
         if (health <= 0)
         {
             // Game Over
         }
 
-        //// Jika isHit di bawah 0
-        //if (isHit <= 0)
-        //{
-        //    sprite.color = Color.white;
-        //}
-        //else
-        //{
-        //    // Jika isHit di atas 0, kurangi tick count dimana player menjadi warna merah
-        //    isHit--;
-        //}
+        // Idle & Run
+        animator.SetFloat("xVelocity", Math.Abs(rb.linearVelocityX));
+        animator.SetFloat("yVelocity", rb.linearVelocityY);
+
+        // Facing
+        if (rb.linearVelocityX < 0f && facingRight)
+        {
+            gameObject.transform.localScale = Flip();
+        }
+        else if (rb.linearVelocityX > 0f && !facingRight)
+        {
+            gameObject.transform.localScale = Flip();
+        }
+    }
+
+    public void TakeDamage(float damage)
+    {
+        health -= damage;
+
+        GameObject.FindWithTag("UI").GetComponent<HealthBarSelector>().updateHealthBar(health / maxHealth * 100);
+        //GameObject.FindWithTag("UI").GetComponent<HealthBarSelector>().updateHealthBar(30);
+    }
+
+    public Vector3 Flip()
+    {
+        facingRight = !facingRight;
+        return new Vector3(-transform.localScale.x, transform.localScale.y, transform.localScale.z);
     }
 }
